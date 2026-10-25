@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Mindful Mental Health Platform - Full Technical Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    @page {
+      size: A4;
+      margin: 14mm 14mm 14mm 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #2D2B3D;
+      background-color: #FFFFFF;
+      line-height: 1.55;
+      font-size: 11pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    .cover-banner {
+      background: linear-gradient(135deg, #4A3E72 0%, #6B609E 50%, #8B80C3 100%);
+      color: #FFFFFF;
+      padding: 28px 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(74, 62, 114, 0.15);
+    }
+
+    .cover-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 6px 0;
+      font-size: 23pt;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 11pt;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .meta-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.25);
+      font-size: 8.5pt;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    h2 {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #4A3E72;
+      border-bottom: 2px solid #E8E4F3;
+      padding-bottom: 6px;
+      margin-top: 24px;
+      margin-bottom: 14px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 11.5pt;
+      font-weight: 700;
+      color: #2D2B3D;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      page-break-after: avoid;
+    }
+
+    p {
+      margin: 0 0 10px 0;
+      color: #4A4658;
+    }
+
+    .card {
+      background: #FAF8F5;
+      border: 1px solid #E8E4F3;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+    }
+
+    .card-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #4A3E72;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 18px 0;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #E4E0EE;
+      padding: 7px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #F3EFF9;
+      color: #4A3E72;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 8pt;
+      letter-spacing: 0.5px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #FAF9FC;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-get { background: #E0F2FE; color: #0369A1; }
+    .badge-post { background: #DCFCE7; color: #15803D; }
+    .badge-put { background: #FEF3C7; color: #B45309; }
+    .badge-del { background: #FEE2E2; color: #B91C1C; }
+    .badge-patch { background: #F3E8FF; color: #7E22CE; }
+    .badge-db { background: #E8E4F3; color: #4A3E72; font-weight: 700; }
+
+    code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #F1EDF8;
+      color: #5D4E8C;
+      padding: 1.5px 5px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+    }
+
+    .keyword {
+      font-weight: 700;
+      color: #6B609E;
+    }
+
+    ul {
+      margin: 4px 0 10px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 4px;
+      color: #4A4658;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .alert-box {
+      border-left: 4px solid #6B609E;
+      background: #F7F5FB;
+      padding: 10px 14px;
+      border-radius: 0 10px 10px 0;
+      margin: 12px 0;
+      font-size: 9.5pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER BANNER -->
+  <div class="cover-banner">
+    <div class="cover-tag">Project Technical Report & Architecture</div>
+    <h1>Mindful Mental Health Platform</h1>
+    <p class="subtitle">সম্পূর্ণ কোডবেস ওভারভিউ, কম্পোনেন্ট ওয়ার্কলিস্ট, MongoDB স্কিমা ও API ডকুমেন্টেশন</p>
+    <div class="meta-bar">
+      <span><strong>Repository:</strong> Mindful_with-backend</span>
+      <span><strong>Stack:</strong> React 18, Vite, Express.js, MongoDB Atlas (MentalHealthDB), Tailwind CSS</span>
+      <span><strong>Date:</strong> October 2026</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2>১. প্রজেক্টের সামগ্রিক কাজের সারসংক্ষেপ (Executive Summary)</h2>
+  <div class="card">
+    <p>এই প্রজেক্টটি একটি ফুল-স্ট্যাক <strong>ইন্টারেক্টিভ মেন্টাল হেলথ ও ওয়েলনেস অ্যাপ্লিকেশন</strong>। ক্লায়েন্ট এবং ব্যবহারকারীর চাহিদামতো প্রজেক্টের ভারী 3D Three.js উপাদান বাদ দিয়ে দ্রুতগতির রেসপনসিভ ল্যাভেন্ডার প্যাস্টেল ইন্টারফেসে রূপান্তর করা হয়েছে এবং ব্যাকএন্ডে <strong>MongoDB Atlas</strong> ক্লাউড ডাটাবেজ ইন্টিগ্রেশন সম্পন্ন করা হয়েছে।</p>
+    <ul>
+      <li><span class="keyword">3D Removal & Bundle Optimization:</span> ভারী WebGL Three.js ক্যানভাস সম্পূর্ণ অপসারণ করে মাত্র ৩৩৫ KB আল্ট্রা-লাইটওয়েট অপ্টিমাইজড বান্ডেলে আনা হয়েছে।</li>
+      <li><span class="keyword">User Hero Image Standard Presentation:</span> ইউজারের আপলোড করা ধ্যানরত ল্যাভেন্ডার ছবিটিকে ওয়াইডস্ক্রিন ১৬:৯ সেন্ট্রাল পজিশনে এনে মুখমণ্ডল ও ফুলগুলো ১০০% দৃশ্যমান করা হয়েছে।</li>
+      <li><span class="keyword">Scroll Illustration Harmonies:</span> স্ক্রোল ডাউন করার প্রতিটি মূল সেকশনে প্রোজেক্ট কালার প্যালেট মিলিয়ে নতুন ৩টি মানানসই ইলাস্ট্রেশন যুক্ত করা হয়েছে।</li>
+      <li><span class="keyword">MongoDB Atlas Cloud Connection:</span> ইউজারের ক্লাউড ক্লাস্টার <code>MentalHealthDB</code>-এর সাথে <code>mindfulDB</code> ডাটাবেজ লাইভ কানেক্ট ও সিড করা হয়েছে।</li>
+      <li><span class="keyword">Full REST APIs & Schemas:</span> ইউজার অথেন্টিকেশন, মুড ট্র্যাকিং, পার্সোনাল ডায়েরি, থেরাপিস্ট ভিডিও সেশন বুকিং ও সেলফ-কেয়ার গোলের পূর্ণাঙ্গ API তৈরি ও ফ্রন্টএন্ডে লিঙ্ক করা হয়েছে।</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 2 -->
+  <h2>২. কম্পোনেন্ট অনুযায়ী কাজের বিস্তারিত (Component-by-Component Breakdown)</h2>
+  
+  <div class="card">
+    <div class="card-title">📁 src/components/views/HomeView.jsx</div>
+    <p><strong>কীওয়ার্ডস:</strong> <code>Hero Centerpiece</code>, <code>16:9 Showcase</code>, <code>Scroll Sections</code>, <code>Quick Note</code>, <code>Contrast Fix</code></p>
+    <ul>
+      <li><strong>হিরো সেকশন সেন্টারিং:</strong> ছবি একপাশে চেপে যাওয়ার সমস্যা দূর করে সেন্ট্রাল ব্যালান্সড ভিউ তৈরি করা হয়েছে যাতে ইউজারের ছবির শান্ত মুখাবয়ব কোনো বাধা ছাড়াই স্পষ্ট দেখা যায়।</li>
+      <li><strong>স্ক্রোল শোকেস ১ (Journaling):</strong> <code>mindful-journal.jpg</code> ইলাস্ট্রেশনের সাথে সরাসরি লাইভ কুইক রিফ্লেকশন টেক্সট বক্স ও রিয়েল-টাইম ক্যারেক্টার কাউন্টার যুক্ত করা হয়েছে।</li>
+      <li><strong>স্ক্রোল শোকেস ২ (Therapy):</strong> <code>mindful-therapy.jpg</code> ইলাস্ট্রেশনের সাথে ভেরিফাইড থেরাপিস্ট কার্ড ও ১-ক্লিক ভিডিও কনসালটেশন বাটন যুক্ত করা হয়েছে।</li>
+      <li><strong>স্ক্রোল শোকেস ৩ (Community):</strong> <code>mindful-community.jpg</code> ইলাস্ট্রেশনের সাথে ট্রেন্ডিং পিয়ার সাপোর্ট ডিসকাশন ও রিপ্লাই কাউন্ট যুক্ত করা হয়েছে।</li>
+      <li><strong>নিউজলেটার কনট্রাস্ট ফিক্স:</strong> "Let's stay in touch" ব্যানারটিতে ডিপ পার্পল গ্র্যাডিয়েন্ট ও হাই-কনট্রাস্ট ক্রিস্টাল ক্লিয়ার হোয়াইট টেক্সট বসানো হয়েছে।</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📁 src/components/interactive/MindfulHeroInteractive.jsx</div>
+    <p><strong>কীওয়ার্ডস:</strong> <code>Web Audio Synthesizer</code>, <code>4-4-4 Breathing</code>, <code>Zen Bell (432Hz)</code>, <code>Daily Affirmations</code></p>
+    <ul>
+      <li><strong>রিয়েল অডিও সাউন্ডস্কেপস:</strong> ব্রাউজারের Web Audio API ব্যবহার করে ৪৩২Hz তিব্বতিয়ান সিংগিং বেল, রিল্যাক্সিং ওশান ওয়েভস ও রেইন সাউন্ড তৈরি করা হয়েছে।</li>
+      <li><strong>ছবির সাথে সিঙ্ক করা ব্রিদিং গাইড:</strong> ছবির কনসেন্ট্রিক রিংয়ের সাথে মিলিয়ে ৪-৪-৪ রিদমিক ব্রিদিং এনিমেশন (Inhale, Hold, Exhale)।</li>
+      <li><strong>নন-অবস্ট্রাকটিভ লেআউট:</strong> সব টেক্সট ও বাটন ছবির নেগেটিভ স্পেসে রাখা হয়েছে, ফলে ছবির মুখ ও ল্যাভেন্ডার ফুল সম্পূর্ণ আনকাট ও ফোকাসে থাকে।</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📁 src/components/views/MoodTrackerView.jsx</div>
+    <p><strong>কীওয়ার্ডস:</strong> <code>Daily Mood Log</code>, <code>Emotional Tags</code>, <code>Score Mapping (1-5)</code>, <code>Weekly/Monthly Analytics</code></p>
+    <ul>
+      <li>প্রতিদিনের মানসিক অবস্থা ৫টি মুড লেভেলে নির্বাচন, বিস্তারিত অনুভূতি ট্যাগ (যেমন: Inspired, Calm, Overwhelmed) ও অ্যাক্টিভিটি সিলেক্ট।</li>
+      <li>সাপ্তাহিক ও মাসিক গড় স্কোর গ্রাফ এবং প্যাটার্ন অ্যানালিটিক্স ট্যাব।</li>
+      <li>প্রতিটি মুড লগ সরাসরি ব্যাকএন্ড API <code>/api/moods</code>-এ পুশ হয় এবং MongoDB-তে সেভ হয়।</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📁 src/components/views/JournalView.jsx</div>
+    <p><strong>কীওয়ার্ডস:</strong> <code>Personal Diary</code>, <code>Prompt Generator</code>, <code>Word & Read-time Counter</code>, <code>Category Search</code></p>
+    <ul>
+      <li>ক্লিকযোগ্য দৈনিক আত্ম-উপলব্ধির প্রম্পট জেনারেটর ("What brought stillness today?")।</li>
+      <li>লাইভ শব্দ ও পড়ার সময় গণক, ক্যাটাগরি ফিল্টারিং (Gratitude, Reflection, Goals), ড্রাফট এডিটিং ও ফেভারিট বুকমার্কিং।</li>
+      <li>প্রতিটি ডায়েরি এন্ট্রি ব্যাকএন্ড API <code>/api/journals</code>-এর মাধ্যমে MongoDB Atlas-এ সুরক্ষিত থাকে।</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📁 src/components/views/DashboardView.jsx</div>
+    <p><strong>কীওয়ার্ডস:</strong> <code>Weekly & Monthly Reports</code>, <code>Activity Statistics</code>, <code>Telehealth Video Modal</code>, <code>Self-Care Checklist</code></p>
+    <ul>
+      <li>সাপ্তাহিক ও মাসিক মুড ট্রেন্ড চার্ট, গড় স্কোর, স্ট্রিক ট্র্যাকিং ও দৈনিক অ্যাক্টিভিটি গ্রাফ।</li>
+      <li>বুক করা থেরাপিস্টদের সাথে লাইভ ভিডিও কনসালটেশন রুম মডাল ও ক্যামেরা/মাইক কন্ট্রোলস।</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📁 src/components/views/ProfileView.jsx</div>
+    <p><strong>কীওয়ার্ডস:</strong> <code>Profile Management</code>, <code>2FA Security</code>, <code>Session History</code>, <code>JSON Data Export</code></p>
+    <ul>
+      <li>ইউজারের ব্যক্তিগত তথ্য, ইমার্জেন্সি কন্টাক্ট ডক্টর, টাইমজোন, দৈনিক রিমাইন্ডার ও নোটিফিকেশন প্রেফারেন্স।</li>
+      <li>পাসওয়ার্ড পরিবর্তন, টু-ফ্যাক্টর অথেন্টিকেশন স্ট্যাটাস এবং নিজের সব ডেটা এক ক্লিকে JSON ফাইলে এক্সপোর্ট করার ফিচার।</li>
+    </ul>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 3 -->
+  <h2>৩. MongoDB ও ব্যাকএন্ড আর্কিটেকচার (Database & Backend Engineering)</h2>
+  <div class="alert-box">
+    <strong>MongoDB Atlas কানেকশন স্ট্যাটাস:</strong> <code>🍃 Connected to MentalHealthDB</code><br>
+    <strong>ডাটাবেজ নাম:</strong> <code>mindfulDB</code><br>
+    <strong>লোকাল ব্যাকএন্ড সার্ভার:</strong> <code>http://localhost:8000</code>
+  </div>
+
+  <h3>ক. তৈরি হওয়া Mongoose স্কিমা ও মডেলসমূহ</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>মডেল ফাইল</th>
+        <th>কালেকশন</th>
+        <th>মূল ফিল্ডসমূহ (Fields)</th>
+        <th>উদ্দেশ্য</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>backend/models/User.js</code></td>
+        <td><span class="badge badge-db">users</span></td>
+        <td>name, email, password, role, specialty, phone, bio, emergencyContact, timezone</td>
+        <td>ব্যবহারকারীর অ্যাকাউন্ট, সিকিউরিটি ও প্রোফাইল ডেটা</td>
+      </tr>
+      <tr>
+        <td><code>backend/models/Mood.js</code></td>
+        <td><span class="badge badge-db">moods</span></td>
+        <td>userId, mood, score (1-5), emotions, activities, note, date</td>
+        <td>দৈনিক মানসিক অবস্থা ও অ্যানালিটিক্স হিস্ট্রি</td>
+      </tr>
+      <tr>
+        <td><code>backend/models/Journal.js</code></td>
+        <td><span class="badge badge-db">journals</span></td>
+        <td>userId, title, content, mood, category, tags, isFavorite, date</td>
+        <td>ব্যক্তিগত ডায়েরি ও রিফ্লেকশন এন্ট্রি</td>
+      </tr>
+      <tr>
+        <td><code>backend/models/Booking.js</code></td>
+        <td><span class="badge badge-db">bookings</span></td>
+        <td>userId, therapistName, therapistRole, date, time, type, status, notes</td>
+        <td>থেরাপিস্টদের সাথে ভিডিও অ্যাপয়েন্টমেন্ট শিডিউল</td>
+      </tr>
+      <tr>
+        <td><code>backend/models/Goal.js</code></td>
+        <td><span class="badge badge-db">goals</span></td>
+        <td>userId, title, category, completed</td>
+        <td>দৈনিক সেলফ-কেয়ার ও ওয়েলনেস গোল চেকলিস্ট</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>খ. ব্যাকএন্ড REST API রাউটসমূহ (backend/server.js)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ফিচার</th>
+        <th>মেথড</th>
+        <th>এন্ডপয়েন্ট (Endpoint)</th>
+        <th>বিবরণ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Health</td>
+        <td><span class="badge badge-get">GET</span></td>
+        <td><code>/api/health</code></td>
+        <td>সার্ভার ও ডাটাবেজ কানেকশন স্ট্যাটাস প্রদান করে</td>
+      </tr>
+      <tr>
+        <td>Auth</td>
+        <td><span class="badge badge-post">POST</span></td>
+        <td><code>/api/register</code></td>
+        <td>Bcrypt পাসওয়ার্ড হ্যাশিং সহ নতুন ইউজার তৈরি</td>
+      </tr>
+      <tr>
+        <td>Auth</td>
+        <td><span class="badge badge-post">POST</span></td>
+        <td><code>/api/login</code></td>
+        <td>ইউজার লগইন ও ৭ দিনের JWT Token প্রদান</td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td><span class="badge badge-get">GET</span></td>
+        <td><code>/api/user/profile</code></td>
+        <td>লগইন করা ইউজারের বর্তমান প্রোফাইল আনয়ন</td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td><span class="badge badge-put">PUT</span></td>
+        <td><code>/api/user/profile</code></td>
+        <td>নাম, ফোন, বায়ো, ইমার্জেন্সি কন্টাক্ট আপডেট</td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td><span class="badge badge-put">PUT</span></td>
+        <td><code>/api/user/password</code></td>
+        <td>পুরনো পাসওয়ার্ড যাচাইপূর্বক নতুন পাসওয়ার্ড সেট</td>
+      </tr>
+      <tr>
+        <td>Mood</td>
+        <td><span class="badge badge-get">GET</span></td>
+        <td><code>/api/moods</code></td>
+        <td>ইউজারের সংরক্ষিত সব মুড হিস্ট্রি ফেচ</td>
+      </tr>
+      <tr>
+        <td>Mood</td>
+        <td><span class="badge badge-post">POST</span></td>
+        <td><code>/api/moods</code></td>
+        <td>নতুন মুড, স্কোর ও অনুভূতি ডাটাবেজে সেভ</td>
+      </tr>
+      <tr>
+        <td>Mood</td>
+        <td><span class="badge badge-del">DELETE</span></td>
+        <td><code>/api/moods/:id</code></td>
+        <td>নির্দিষ্ট মুড এন্ট্রি অপসারণ</td>
+      </tr>
+      <tr>
+        <td>Mood</td>
+        <td><span class="badge badge-get">GET</span></td>
+        <td><code>/api/moods/analytics</code></td>
+        <td>সাপ্তাহিক ও মাসিক গড় স্কোর ও ডিস্ট্রিবিউশন হিসেব</td>
+      </tr>
+      <tr>
+        <td>Journal</td>
+        <td><span class="badge badge-get">GET</span></td>
+        <td><code>/api/journals</code></td>
+        <td>ক্যাটাগরি ও সার্চ ফিল্টার সহ জার্নাল লিস্ট</td>
+      </tr>
+      <tr>
+        <td>Journal</td>
+        <td><span class="badge badge-post">POST</span></td>
+        <td><code>/api/journals</code></td>
+        <td>নতুন ডায়েরি নোট ডাটাবেজে সংরক্ষণ</td>
+      </tr>
+      <tr>
+        <td>Journal</td>
+        <td><span class="badge badge-put">PUT</span></td>
+        <td><code>/api/journals/:id</code></td>
+        <td>সংরক্ষিত জার্নাল এডিট ও আপডেট</td>
+      </tr>
+      <tr>
+        <td>Journal</td>
+        <td><span class="badge badge-patch">PATCH</span></td>
+        <td><code>/api/journals/:id/favorite</code></td>
+        <td>জার্নাল ফেভারিট স্টার টগল</td>
+      </tr>
+      <tr>
+        <td>Journal</td>
+        <td><span class="badge badge-del">DELETE</span></td>
+        <td><code>/api/journals/:id</code></td>
+        <td>জার্নাল এন্ট্রি ডিলিট</td>
+      </tr>
+      <tr>
+        <td>Booking</td>
+        <td><span class="badge badge-get">GET</span></td>
+        <td><code>/api/bookings</code></td>
+        <td>ইউজারের শিডিউল করা সব অ্যাপয়েন্টমেন্ট ফেচ</td>
+      </tr>
+      <tr>
+        <td>Booking</td>
+        <td><span class="badge badge-post">POST</span></td>
+        <td><code>/api/bookings</code></td>
+        <td>নতুন ভিডিও কনসালটেশন বুকিং</td>
+      </tr>
+      <tr>
+        <td>Booking</td>
+        <td><span class="badge badge-del">DELETE</span></td>
+        <td><code>/api/bookings/:id</code></td>
+        <td>বুকিং বাতিল করা</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>গ. ফ্রন্টএন্ড API সার্ভিস লেয়ার (src/services/api.js)</h3>
+  <div class="card">
+    <p>ফ্রন্টএন্ডের জন্য একটি সেন্ট্রালাইজড এপিআই ক্লায়েন্ট তৈরি করা হয়েছে। এটি প্রতিটি রিকোয়েস্টে স্বয়ংক্রিয়ভাবে লোকালস্টোরেজ থেকে <code>Authorization: Bearer &lt;token&gt;</code> যুক্ত করে।</p>
+    <p><strong>স্মার্ট অফলাইন ফলব্যাক:</strong> নেটওয়ার্ক ড্রপ হলে বা ব্যাকএন্ড সাময়িক অফলাইনে থাকলেও অ্যাপ্লিকেশন ক্র্যাশ করে না; স্বয়ংক্রিয়ভাবে লোকালস্টোরে ডেটা ব্যাকআপ রেখে অ্যাপকে সচল রাখে।</p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- SECTION 4 -->
+  <h2>৪. প্যাকেজ ও ফাইল পরিবর্তনের তালিকা (Package & File Audit)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ফাইল বা ফোল্ডারের নাম</th>
+        <th>ধরন</th>
+        <th>কী কী পরিবর্তন ও কাজ হয়েছে</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>backend/package.json</code></td>
+        <td>কনফিগ</td>
+        <td>Express 5, Mongoose 9.9, Bcryptjs, JsonWebToken, Cors, Dotenv প্যাকেজ ইনস্টল করা হয়েছে।</td>
+      </tr>
+      <tr>
+        <td><code>backend/.env</code></td>
+        <td>এনভায়রনমেন্ট</td>
+        <td>MongoDB Atlas-এর রেপ্লিকাসেট কানেকশন স্ট্রিং, JWT_SECRET ও PORT=8000 কনফিগারেশন সেট।</td>
+      </tr>
+      <tr>
+        <td><code>backend/server.js</code></td>
+        <td>ব্যাকএন্ড কোর</td>
+        <td>Express REST API সার্ভার, সব রাউট, Mongoose হ্যান্ডলিং ও গ্লোবাল এরর হ্যান্ডলার।</td>
+      </tr>
+      <tr>
+        <td><code>backend/middleware/auth.js</code></td>
+        <td>মিডলওয়্যার</td>
+        <td>ইনকামিং রিকোয়েস্টের JWT হেডার ভেরিফাই করে ইউজারের আইডি অথেন্টিকেট করার লজিক।</td>
+      </tr>
+      <tr>
+        <td><code>backend/seed.js</code></td>
+        <td>সিডিং স্ক্রিপ্ট</td>
+        <td>Atlas ক্লাউডে প্রথমবার কানেক্ট হয়ে টেস্ট ইউজার, মুড, জার্নাল ও বুকিং তৈরি করা স্ক্রিপ্ট।</td>
+      </tr>
+      <tr>
+        <td><code>src/services/api.js</code></td>
+        <td>সার্ভিস</td>
+        <td>ফ্রন্টএন্ড ও ব্যাকএন্ডের মধ্যে ডেটা লেনদেনের পূর্ণাঙ্গ সেন্ট্রালাইজড ফেচ ক্লায়েন্ট।</td>
+      </tr>
+      <tr>
+        <td><code>src/App.jsx</code></td>
+        <td>ফ্রন্টএন্ড কোর</td>
+        <td>রুট লেভেলে API হ্যান্ডলারস লিঙ্কিং, লোকালস্টোরেজ পারসিস্টেন্স ও রিয়েল-টাইম সিঙ্কিং।</td>
+      </tr>
+      <tr>
+        <td><code>src/components/views/HomeView.jsx</code></td>
+        <td>ভিউ</td>
+        <td>সেন্টার্ড হিরো ব্যানার, ৩টি স্ক্রোল ইলাস্ট্রেশন শোকেস ও নিউজলেটার হাই-কনট্রাস্ট ফিক্স।</td>
+      </tr>
+      <tr>
+        <td><code>src/components/interactive/MindfulHeroInteractive.jsx</code></td>
+        <td>ইন্টারেক্টিভ</td>
+        <td>১৬:৯ আনকাট ইমেজ ফ্রেম, ৪৩২Hz তিব্বতিয়ান সিংগিং বেল, ব্রিদিং এনিমেশন ও ডেইলি এফারমেশনস।</td>
+      </tr>
+      <tr>
+        <td><code>src/components/3d/MoodSphere3D.jsx</code></td>
+        <td>কম্পোনেন্ট</td>
+        <td>ভারী WebGL Three.js বাদ দিয়ে প্রিমিয়াম লিকুইড গ্লাস CSS/SVG অরবে রূপান্তর।</td>
+      </tr>
+      <tr>
+        <td><code>src/components/3d/Brain3DCanvas.jsx</code></td>
+        <td>কম্পোনেন্ট</td>
+        <td>পুরনো ৩ডি ক্যানভাস কোড সরিয়ে লাইটওয়েট অপ্টিমাইজড স্টাবে রূপান্তর (জিরো ল্যাগ)।</td>
+      </tr>
+      <tr>
+        <td><code>src/index.css</code></td>
+        <td>স্টাইলস</td>
+        <td><code>mindful-mesh-bg</code>, <code>zen-dot-pattern</code>, <code>banner-gradient</code> ক্লাস যোগ।</td>
+      </tr>
+      <tr>
+        <td><code>vite.config.js</code></td>
+        <td>বিল্ড টুল</td>
+        <td>পোর্ট ৭৩ থেকে পরিবর্তন করে স্ট্যান্ডার্ড পোর্ট ৫১73 সেট করা হয়েছে।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 5 -->
+  <h2>৫. কীওয়ার্ড অনুযায়ী দ্রুত রেফারেন্স তালিকা (Keywords Glossary)</h2>
+  <div class="card">
+    <ul>
+      <li><strong>Mongoose Schema:</strong> MongoDB-তে সংরক্ষিত প্রতিটি ডকুমেন্টের স্ট্রাকচার, ডাটা টাইপ ও ভ্যালিডেশন রুলস (যেমন: <code>User</code>, <code>Mood</code>, <code>Journal</code>)।</li>
+      <li><strong>Bcryptjs:</strong> ব্যবহারকারীর পাসওয়ার্ডকে ডাটাবেজে সরাসরি প্লেইন টেক্সট হিসেবে না রেখে শক্তিশালী সল্ট দিয়ে অপরিবর্তনীয় হ্যাশ-এ রূপান্তর।</li>
+      <li><strong>JWT (JSON Web Token):</strong> ব্যবহারকারী লগইন করার পর সার্ভার থেকে ক্রিপ্টোগ্রাফিক ডিজিটাল টোকেন, যা প্রতিটি রিকোয়েস্টে পরিচয় নিশ্চিত করে।</li>
+      <li><strong>CORS (Cross-Origin Resource Sharing):</strong> পোর্ট ৫১73 (ফ্রন্টএন্ড) থেকে পোর্ট ৮০০০ (ব্যাকএন্ড)-এ ডেটা পাঠানোর নিরাপদ ব্রাউজার পারমিশন।</li>
+      <li><strong>Web Audio API:</strong> কোনো ভারী অডিও ফাইল ডাউনলোড না করে ব্রাউজারের ভেতর সরাসরি সাউন্ড ওয়েভ তৈরি করে ৪৩২Hz সিংগিং বেল ও ওশান ওয়েভ বাজানো।</li>
+      <li><strong>16:9 Aspect Ratio:</strong> ছবির অনুপাত (১০২৪x৫৭৬) নিখুঁত বজায় রাখা, যাতে মুখের অংশ কোনোভাবেই কেটে না যায়।</li>
+      <li><strong>ReplicaSet URI:</strong> MongoDB Atlas-এর ক্লাউড ডিস্ট্রিবিউটেড সার্ভারগুলোর সাথে নিরাপদ SSL কানেকশন স্ট্রিং।</li>
+      <li><strong>Data Seeding:</strong> নতুন তৈরি হওয়া ডাটাবেজে প্রথমবার টেস্ট করার জন্য স্বয়ংক্রিয়ভাবে ইনিশিয়াল ডেটা যোগ করা।</li>
+    </ul>
+  </div>
+
+  <div style="text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #E4E0EE; font-size: 8.5pt; color: #8A8598;">
+    Mindful Mental Health Support Platform • Complete Production Documentation • Generated October 2026
+  </div>
+
+</body>
+</html>
