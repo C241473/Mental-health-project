@@ -14,7 +14,7 @@ async function seedDatabase() {
     await mongoose.connect(mongoUri);
     console.log('🍃 Connected to MongoDB for seeding...');
 
-    // 1. Seed or update demo user
+    // 1. Seed demo patient
     let user = await User.findOne({ email: 'alex@mindful.org' });
     if (!user) {
       const salt = await bcrypt.genSalt(10);
@@ -35,9 +35,58 @@ async function seedDatabase() {
         avatarColor: 'from-mindful-purple to-mindful-peach'
       });
       await user.save();
-      console.log('✅ User created:', user.email);
+      console.log('✅ Patient user created:', user.email);
     } else {
-      console.log('ℹ️ User already exists:', user.email);
+      console.log('ℹ️ Patient already exists:', user.email);
+    }
+
+    // 1b. Seed Admin User
+    let adminUser = await User.findOne({ email: 'admin@mindful.org' });
+    if (!adminUser) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('admin123', salt);
+      adminUser = new User({
+        name: 'System Administrator',
+        email: 'admin@mindful.org',
+        password: hashedPassword,
+        role: 'admin',
+        phone: '+1 (555) 999-0001',
+        bio: 'Mindful Platform System Administrator & Clinic Director.',
+        emergencyContact: '+1 (555) 999-0000',
+        timezone: 'Eastern Time (US & Canada) - GMT-5',
+        dailyReminderTime: '09:00 AM',
+        notificationsEnabled: true,
+        ambientAnimations: true,
+        soundEffects: true,
+        avatarColor: 'from-purple-700 to-indigo-800'
+      });
+      await adminUser.save();
+      console.log('✅ Admin user created in MongoDB Atlas:', adminUser.email);
+    }
+
+    // 1c. Seed Therapist User
+    let therapistUser = await User.findOne({ email: 'dr.sarah@mindful.org' });
+    if (!therapistUser) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('therapist123', salt);
+      therapistUser = new User({
+        name: 'Dr. Sarah Ahmed',
+        email: 'dr.sarah@mindful.org',
+        password: hashedPassword,
+        role: 'therapist',
+        specialty: 'Clinical Psychologist',
+        phone: '+1 (555) 456-7890',
+        bio: '12+ years experience in cognitive behavioral therapy and mindfulness-based stress reduction.',
+        emergencyContact: '+1 (555) 456-7899',
+        timezone: 'Eastern Time (US & Canada) - GMT-5',
+        dailyReminderTime: '08:00 AM',
+        notificationsEnabled: true,
+        ambientAnimations: true,
+        soundEffects: true,
+        avatarColor: 'from-pink-500 to-rose-600'
+      });
+      await therapistUser.save();
+      console.log('✅ Therapist user created in MongoDB Atlas:', therapistUser.email);
     }
 
     // 2. Seed initial moods

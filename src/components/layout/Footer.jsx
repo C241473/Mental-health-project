@@ -49,6 +49,7 @@ export default function Footer({ onNavigate }) {
               <li><button onClick={() => onNavigate('home')} className="hover:text-mindful-purple transition-colors">About Us</button></li>
               <li><button onClick={() => onNavigate('therapists')} className="hover:text-mindful-purple transition-colors">Our Services</button></li>
               <li><button onClick={() => onNavigate('therapists')} className="hover:text-mindful-purple transition-colors">Therapists</button></li>
+              <li><button onClick={() => onNavigate('admin')} className="text-mindful-purple font-semibold hover:underline flex items-center gap-1">Admin Panel</button></li>
               <li><button onClick={() => onNavigate('home')} className="hover:text-mindful-purple transition-colors">Contact Us</button></li>
             </ul>
           </div>

@@ -168,6 +168,57 @@ export const api = {
     toggle: async (id) => {
       return request(`/goals/${id}/toggle`, { method: 'PATCH' });
     }
+  },
+
+  // Admin Management APIs (MongoDB Atlas Direct Sync)
+  admin: {
+    login: async (email, password) => {
+      return request('/admin/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password })
+      });
+    },
+
+    getStats: async () => {
+      return request('/admin/stats', { method: 'GET' });
+    },
+
+    getUsers: async () => {
+      return request('/admin/users', { method: 'GET' });
+    },
+
+    createUser: async (userData) => {
+      return request('/admin/users', {
+        method: 'POST',
+        body: JSON.stringify(userData)
+      });
+    },
+
+    updateUserRole: async (id, role, specialty = '') => {
+      return request(`/admin/users/${id}/role`, {
+        method: 'PATCH',
+        body: JSON.stringify({ role, specialty })
+      });
+    },
+
+    deleteUser: async (id) => {
+      return request(`/admin/users/${id}`, { method: 'DELETE' });
+    },
+
+    getBookings: async () => {
+      return request('/admin/bookings', { method: 'GET' });
+    },
+
+    updateBookingStatus: async (id, status) => {
+      return request(`/admin/bookings/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status })
+      });
+    },
+
+    deleteBooking: async (id) => {
+      return request(`/admin/bookings/${id}`, { method: 'DELETE' });
+    }
   }
 };
 

@@ -6,7 +6,8 @@ import {
   X, 
   User, 
   LogOut,
-  ChevronDown
+  ChevronDown,
+  Shield
 } from 'lucide-react';
 
 export default function Navbar({ activeTab, setActiveTab, onOpenAuth, currentUser, onLogout }) {
@@ -21,6 +22,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuth, currentUse
     { id: 'journal', label: 'Journal', protected: true },
     { id: 'mood', label: 'Mood Tracker', protected: true },
     { id: 'booking', label: 'Book Session', protected: true },
+    { id: 'admin', label: 'Admin', badge: 'Atlas' },
   ];
 
   const handleNavClick = (id) => {
@@ -106,6 +108,16 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAuth, currentUse
                     className="w-full text-left px-4 py-2 text-xs font-bold text-mindful-textDark hover:bg-mindful-bg transition-colors"
                   >
                     Dashboard
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('admin')}
+                    className="w-full text-left px-4 py-2 text-xs font-bold text-mindful-purple hover:bg-mindful-bg transition-colors flex items-center justify-between"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <Shield className="w-3.5 h-3.5" />
+                      Admin Control
+                    </span>
+                    <span className="text-[9px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold">Atlas</span>
                   </button>
                   <button
                     onClick={() => handleNavClick('profile')}

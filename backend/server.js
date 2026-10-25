@@ -449,6 +449,217 @@ app.patch('/api/goals/:id/toggle', async (req, res) => {
   }
 });
 
+// ==========================================
+// 8. ADMIN PANEL APIs (Real-time MongoDB Sync)
+// ==========================================
+
+// 0. Dedicated Admin Login (Strictly verifies role === 'admin' and password)
+app.post('/api/admin/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Admin email and password are required' });
+  }
+
+  try {
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid admin credentials. Account not found.' });
+    }
+
+    // Role check: ONLY 'admin' role permitted!
+    if (user.role !== 'admin') {
+      return res.status(403).json({
+        message: 'Access Denied: This account is not registered as an Administrator. Only users with role "admin" can access this panel.'
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Incorrect admin password' });
+    }
+
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+
+    res.status(200).json({
+      message: 'Admin authorization granted',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Admin authentication failed', error: error.message });
+  }
+});
+
+// 1. Admin Dashboard Stats
+app.get('/api/admin/stats', async (req, res) => {
+  try {
+    const [
+      totalUsers,
+      totalPatients,
+      totalTherapists,
+      totalAdmins,
+      totalMoods,
+      totalJournals,
+      totalBookings,
+      confirmedBookings,
+      completedBookings,
+      cancelledBookings
+    ] = await Promise.all([
+      User.countDocuments(),
+      User.countDocuments({ role: 'patient' }),
+      User.countDocuments({ role: 'therapist' }),
+      User.countDocuments({ role: 'admin' }),
+      Mood.countDocuments(),
+      Journal.countDocuments(),
+      Booking.countDocuments(),
+      Booking.countDocuments({ status: 'Confirmed' }),
+      Booking.countDocuments({ status: 'Completed' }),
+      Booking.countDocuments({ status: 'Cancelled' })
+    ]);
+
+    const recentUsers = await User.find().select('-password').sort({ createdAt: -1 }).limit(5);
+    const recentBookings = await Booking.find().sort({ createdAt: -1 }).limit(5);
+
+    res.json({
+      metrics: {
+        totalUsers,
+        totalPatients,
+        totalTherapists,
+        totalAdmins,
+        totalMoods,
+        totalJournals,
+        totalBookings,
+        confirmedBookings,
+        completedBookings,
+        cancelledBookings,
+        database: mongoose.connection.readyState === 1 ? 'Atlas Connected' : 'Disconnected'
+      },
+      recentUsers,
+      recentBookings
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch admin stats', error: err.message });
+  }
+});
+
+// 2. Get All Users
+app.get('/api/admin/users', async (req, res) => {
+  try {
+    const users = await User.find().select('-password').sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch users', error: err.message });
+  }
+});
+
+// 3. Create User Manually from Admin
+app.post('/api/admin/users', async (req, res) => {
+  const { name, email, password, role, specialty, phone } = req.body;
+  if (!name || !email) {
+    return res.status(400).json({ message: 'Name and email are required' });
+  }
+
+  try {
+    const existing = await User.findOne({ email: email.toLowerCase() });
+    if (existing) {
+      return res.status(400).json({ message: 'User with this email already exists' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password || 'mindful123', salt);
+
+    const newUser = new User({
+      name,
+      email: email.toLowerCase(),
+      password: hashedPassword,
+      role: role || 'patient',
+      specialty: role === 'therapist' ? (specialty || 'Counseling') : null,
+      phone: phone || '+1 (555) 000-0000'
+    });
+
+    const saved = await newUser.save();
+    const cleanUser = saved.toObject();
+    delete cleanUser.password;
+    res.status(201).json(cleanUser);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to create user', error: err.message });
+  }
+});
+
+// 4. Update User Role (e.g. promote to therapist or admin)
+app.patch('/api/admin/users/:id/role', async (req, res) => {
+  const { role, specialty } = req.body;
+  if (!['patient', 'therapist', 'admin'].includes(role)) {
+    return res.status(400).json({ message: 'Invalid role specified' });
+  }
+
+  try {
+    const updateData = { role };
+    if (role === 'therapist' && specialty) updateData.specialty = specialty;
+
+    const updated = await User.findByIdAndUpdate(req.params.id, updateData, { new: true }).select('-password');
+    if (!updated) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: `User role updated to ${role} in MongoDB`, user: updated });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update user role', error: err.message });
+  }
+});
+
+// 5. Delete User from MongoDB
+app.delete('/api/admin/users/:id', async (req, res) => {
+  try {
+    const deleted = await User.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: 'User successfully removed from MongoDB database' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete user', error: err.message });
+  }
+});
+
+// 6. Get All Bookings for Admin
+app.get('/api/admin/bookings', async (req, res) => {
+  try {
+    const bookings = await Booking.find().sort({ createdAt: -1 });
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch bookings', error: err.message });
+  }
+});
+
+// 7. Update Booking Status (Confirmed / Completed / Cancelled)
+app.patch('/api/admin/bookings/:id/status', async (req, res) => {
+  const { status } = req.body;
+  if (!['Confirmed', 'Completed', 'Cancelled'].includes(status)) {
+    return res.status(400).json({ message: 'Invalid status' });
+  }
+
+  try {
+    const updated = await Booking.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    if (!updated) return res.status(404).json({ message: 'Booking not found' });
+    res.json({ message: `Appointment status updated to ${status} in MongoDB`, booking: updated });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update booking status', error: err.message });
+  }
+});
+
+// 8. Delete Booking from MongoDB
+app.delete('/api/admin/bookings/:id', async (req, res) => {
+  try {
+    const deleted = await Booking.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Booking not found' });
+    res.json({ message: 'Booking successfully deleted from MongoDB' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete booking', error: err.message });
+  }
+});
+
 // Server Listen
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, '0.0.0.0', () => {

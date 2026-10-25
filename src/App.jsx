@@ -14,6 +14,7 @@ import CommunityView from './components/views/CommunityView';
 import TherapistsView from './components/views/TherapistsView';
 import BookingView from './components/views/BookingView';
 import ProfileView from './components/views/ProfileView';
+import AdminView from './components/views/AdminView';
 
 // Default Realistic Initial Datasets
 const DEFAULT_USER = {
@@ -484,6 +485,12 @@ export default function App() {
           ) : (
             <AuthRequiredView onOpenAuth={handleOpenAuth} featureName="Account Profile" />
           )
+        )}
+
+        {activeTab === 'admin' && (
+          <AdminView
+            onNavigate={setActiveTab}
+          />
         )}
 
       </main>
